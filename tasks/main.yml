@@ -1,0 +1,50 @@
+- name: Create duplicity secrets directory
+  file:
+    path: /root/duplicity-secrets
+    state: directory
+    mode: 0770
+
+- name: Copy backup script
+  template:
+    src: backup.sh
+    dest: /root/backup.sh
+    mode: 0700
+
+- name: Copy duplicity passphrase file
+  template:
+    src: duplicity-passphrase
+    dest: /root/duplicity-secrets/duplicity-passphrase
+    mode: 0600
+
+- name: Copy duplicity aws secret access key file
+  template:
+    src: aws-secret-access-key
+    dest: /root/duplicity-secrets/aws-secret-access-key
+    mode: 0600
+
+# - name: Install cronic
+#   package:
+#     name: cronic
+#     state: present
+#
+# - name: Set up cron for backup script
+#   cron:
+#     name: "do backups"
+#     minute: "30"
+#     hour: "2"
+#     job: "cronic /root/backup.sh"
+
+- name: Install systemd service and timer
+  template:
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
+    mode: 0644
+  loop:
+    - duplicity-backup.service
+    - duplicity-backup.timer
+
+- name: Enable and start systemd timer
+  service:
+    name: duplicity-backup.timer
+    enabled: yes
+    state: started

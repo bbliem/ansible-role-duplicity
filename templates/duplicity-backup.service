@@ -1,0 +1,6 @@
+[Unit]
+Description=Run duplicity backup script
+
+[Service]
+Type=oneshot
+ExecStart=/root/backup.sh

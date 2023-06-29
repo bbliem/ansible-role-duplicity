@@ -46,7 +46,7 @@ mkdir -p ${POSTGRES_BACKUPS_PATH}
 pushd ${POSTGRES_BACKUPS_PATH}
 
 echo "Creating host database dump"
-sudo -i -u postgres pg_dumpall | bzip2 > "${POSTGRES_BACKUPS_PATH}/${DATE}.sql.bz2"
+sudo -u postgres pg_dumpall | bzip2 > "${POSTGRES_BACKUPS_PATH}/${DATE}.sql.bz2"
 
 echo "Running duplicity for backup $BACKUP_NAME on $DATE"
 

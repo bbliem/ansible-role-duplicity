@@ -2,25 +2,25 @@
   ansible.builtin.file:
     path: /root/duplicity-secrets
     state: directory
-    mode: 0770
+    mode: '0770'
 
 - name: Copy backup script
   ansible.builtin.template:
     src: backup.sh
     dest: /root/backup.sh
-    mode: 0700
+    mode: '0700'
 
 - name: Copy duplicity passphrase file
   ansible.builtin.template:
     src: duplicity-passphrase
     dest: /root/duplicity-secrets/duplicity-passphrase
-    mode: 0600
+    mode: '0600'
 
 - name: Copy duplicity aws secret access key file
   ansible.builtin.template:
     src: aws-secret-access-key
     dest: /root/duplicity-secrets/aws-secret-access-key
-    mode: 0600
+    mode: '0600'
 
 # - name: Install cronic
 #   ansible.builtin.package:
@@ -38,7 +38,7 @@
   ansible.builtin.template:
     src: "{{ item }}"
     dest: "/etc/systemd/system/{{ item }}"
-    mode: 0644
+    mode: '0644'
   loop:
     - duplicity-backup.service
     - duplicity-backup.timer
